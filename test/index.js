@@ -144,16 +144,32 @@ test("works with nested things", function (assert) {
     assert.end()
 })
 
+test("observ struct with special properties", function t(assert) {
+    var obs = ObservHash({
+        length: Observ(1),
+        name: Observ('foo')
+    })
+
+    assert.equal(obs.length(), 1)
+    assert.equal(obs.name(), 'foo')
+    assert.deepEqual(obs(), {
+        length: 1,
+        name: 'foo'
+    })
+
+    assert.end()
+})
+
 test("observ struct with blackList", function t(assert) {
     assert.throws(function () {
         ObservHash({
-            name: Observ("foo")
+            _diff: Observ("foo")
         });
     }, /cannot create/);
 
     assert.throws(function () {
         ObservHash({
-            length: Observ("foo")
+            _type: Observ("foo")
         });
     }, /cannot create/);
 

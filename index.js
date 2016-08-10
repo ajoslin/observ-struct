@@ -2,12 +2,11 @@ var Observ = require("observ")
 var extend = require("xtend")
 
 var blackList = {
-    "length": "Clashes with `Function.prototype.length`.\n",
-    "name": "Clashes with `Function.prototype.name`.\n",
     "_diff": "_diff is reserved key of observ-struct.\n",
     "_type": "_type is reserved key of observ-struct.\n",
     "_version": "_version is reserved key of observ-struct.\n"
 }
+var definePropertyList = ["length", "name"]
 var NO_TRANSACTION = {}
 
 function setNonEnumerable(object, key, value) {
@@ -50,7 +49,16 @@ function ObservStruct(struct) {
     var obs = Observ(initialState)
     keys.forEach(function (key) {
         var observ = struct[key]
-        obs[key] = observ
+
+        if (definePropertyList.indexOf(key) !== -1) {
+            Object.defineProperty(obs, key, {
+                get: function () {
+                    return observ
+                }
+            })
+        } else {
+            obs[key] = observ
+        }
 
         if (typeof observ === "function") {
             observ(function (value) {
