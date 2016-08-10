@@ -1,6 +1,6 @@
 {
   "name": "observ-struct-free",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "An object with observable key value pairs -- FORKED to allow name and length",
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
